@@ -19,7 +19,8 @@ private:
 	TreeNode * head = nullptr;
 
 	int* ReadPreOrder(TreeNode * current);
-	int preOrderIndex = 0;
+	int* ReadInOrder(TreeNode * current);
+	int ArrIndex = 0;
 	int * bstToArr = new int[Length];
 	
 public:

@@ -50,18 +50,29 @@ int BinarySearchTree::Find(int data)
 int * BinarySearchTree::Read()
 {
 	bstToArr = new int[Length];
-	preOrderIndex = 0;
+	ArrIndex = 0;
 
-	return ReadPreOrder(head);
+	return ReadInOrder(head);
 }
 int * BinarySearchTree::ReadPreOrder(TreeNode * current)
 {
-	bstToArr[preOrderIndex] = current->data;
-	preOrderIndex++;
+	bstToArr[ArrIndex] = current->data;
+	ArrIndex++;
 	if (current->left)
 		ReadPreOrder(current->left);
 	if (current->right)
 		ReadPreOrder(current->right);
+	return bstToArr;
+}
+
+int * BinarySearchTree::ReadInOrder(TreeNode * current)
+{
+	if (current->left)
+		ReadInOrder(current->left);
+	bstToArr[ArrIndex] = current->data;
+	ArrIndex++;
+	if (current->right)
+		ReadInOrder(current->right);
 	return bstToArr;
 }
 
@@ -82,6 +93,7 @@ TreeNode* BinarySearchTree::FindInBST(TreeNode * current, int data)
 	}
 	return nullptr;
 }
+
 
 void BinarySearchTree::Delete(int data)
 {
