@@ -24,6 +24,9 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BinarySearchTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -32,7 +35,7 @@
     <ClCompile Include="JustFuckingAround.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
+    <ClCompile Include="BinarySearchTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
