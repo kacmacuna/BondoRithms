@@ -1,9 +1,11 @@
 #pragma once
+#include <memory>
 
+using namespace std;
 class TreeNode {
 public:
-	TreeNode * left = nullptr;
-	TreeNode * right = nullptr;
+	shared_ptr<shared_ptr<TreeNode>> sLeft;
+	shared_ptr<shared_ptr<TreeNode>> sRight;
 	int data;
 public:
 	TreeNode(int data)
@@ -14,19 +16,18 @@ public:
 
 class BinarySearchTree {
 private:
-	void AddElement(TreeNode * current, int data);
-	TreeNode* FindInBST(TreeNode * current, int data);
-	TreeNode * head = nullptr;
+	void AddElement(shared_ptr<shared_ptr<TreeNode>> current, int data);
+	shared_ptr<shared_ptr<TreeNode>> FindInBST(shared_ptr<shared_ptr<TreeNode>> current, int data);
+	int* ReadInOrder(shared_ptr<shared_ptr<TreeNode>> current);
 
-	int* ReadPreOrder(TreeNode * current);
-	int* ReadInOrder(TreeNode * current);
+	shared_ptr<shared_ptr<TreeNode>> sHead = nullptr;
 	int ArrIndex = 0;
 	int * bstToArr = new int[Length];
-	
 public:
+
+	shared_ptr<shared_ptr<TreeNode>> Find(int data);
 	void Add(int data);
-	int Find(int data);
-	void Delete(int data);
 	int* Read();
+	bool Delete(int data);
 	int Length = 0;
 };
