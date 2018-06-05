@@ -5,12 +5,20 @@
 #include <algorithm>
 
 
-int * BinarySearchTree::Read()
+vector<shared_ptr<shared_ptr<TreeNode>>> BinarySearchTree::Read()
 {
 	bstToArr = new int[Length];
+	bstToVector.clear();
+	bstToVector.reserve(Length);
 	ArrIndex = 0;
 
 	return ReadInOrder(sHead);
+}
+
+
+bool compareByData(const std::shared_ptr<shared_ptr<TreeNode>>& a, const std::shared_ptr<shared_ptr<TreeNode>>& b)
+{
+	return (*a)->data < (*b)->data;
 }
 
 bool BinarySearchTree::Delete(int data)
@@ -23,6 +31,7 @@ bool BinarySearchTree::Delete(int data)
 	/*Is Leaf*/
 	if (!currentNode->sLeft && !currentNode->sRight)
 	{
+		cout << "Doesnt Have Any Fucking Child";
 		*currentPtr = nullptr;
 		return true;
 	}
@@ -42,20 +51,23 @@ bool BinarySearchTree::Delete(int data)
 	}
 	/*Has Both Child*/
 	/*So Find Smallest Number In Right Sub-Tree And Swap*/
-	ArrIndex = 0;
-	int * subTreeMembers = ReadInOrder(currentNode->sRight);
-	sort(subTreeMembers, subTreeMembers + ArrIndex);
 
-	int newValue = subTreeMembers[0];
+	ArrIndex = 0;
+	bstToVector.clear();
+	bstToVector.reserve(Length);
+	vector<shared_ptr<shared_ptr<TreeNode>>> subTreeMembers = ReadInOrder(currentNode->sRight);
+	sort(subTreeMembers.begin(), subTreeMembers.end(), compareByData);
+
+	int newValue = (*(subTreeMembers[0]))->data;
 	cout << newValue;
 	Delete(newValue);
 
-	currentNode->data = subTreeMembers[0];
+	currentNode->data = newValue;
 
 	return true;
 }
 
-int * BinarySearchTree::ReadInOrder(shared_ptr<shared_ptr<TreeNode>> current)
+vector<shared_ptr<shared_ptr<TreeNode>>> BinarySearchTree::ReadInOrder(shared_ptr<shared_ptr<TreeNode>> current)
 {
 
 	shared_ptr<TreeNode> currentNode = *current;
@@ -66,15 +78,16 @@ int * BinarySearchTree::ReadInOrder(shared_ptr<shared_ptr<TreeNode>> current)
 		if (*(currentNode->sLeft))
 			ReadInOrder(currentNode->sLeft);
 	}
-	cout << ArrIndex << " : " << currentNode->data << " | ";
+	cout << ArrIndex << " : " << currentNode->data << " " << currentNode->height << endl;
 	bstToArr[ArrIndex] = currentNode->data;
+	bstToVector.push_back(current);
 	ArrIndex++;
 	if ((currentNode->sRight))
 	{
 		if (*(currentNode->sRight))
 			ReadInOrder(currentNode->sRight);
 	}
-	return bstToArr;
+	return bstToVector;
 }
 
 
@@ -108,9 +121,11 @@ shared_ptr<shared_ptr<TreeNode>> BinarySearchTree::FindInBST(shared_ptr<shared_p
 void BinarySearchTree::Add(int data)
 {
 	Length++;
+	heightOfCurrentTree = 2;
 	if (!sHead)
 	{
 		sHead = make_shared<shared_ptr<TreeNode>>(make_shared<TreeNode>(data));
+		(*sHead)->height = 1;
 		return;
 	}
 	AddElement(sHead, data);
@@ -123,20 +138,24 @@ void BinarySearchTree::AddElement(shared_ptr<shared_ptr<TreeNode>> current, int 
 	if (data <= currentNode->data && currentNode->sLeft == nullptr)
 	{
 		currentNode->sLeft = make_shared<shared_ptr<TreeNode>>(make_shared<TreeNode>(data));
+		(*(currentNode->sLeft))->height = heightOfCurrentTree;
 	}
 	/*If Left Child Pos Already Is Occupied Use Recursion */
 	else if (data <= currentNode->data && currentNode->sLeft != nullptr)
 	{
+		heightOfCurrentTree++;
 		AddElement(currentNode->sLeft, data);
 	}
 	/*Add Element If Right Child Is Empty*/
 	if (data > currentNode->data && currentNode->sRight == nullptr)
 	{
 		currentNode->sRight = make_shared<shared_ptr<TreeNode>>(make_shared<TreeNode>(data));
+		(*(currentNode->sRight))->height = heightOfCurrentTree;
 	}
 	/*If Right Child Pos Already Is Occupied Use Recursion */
 	else if (data > currentNode->data && currentNode->sRight != nullptr)
 	{
+		heightOfCurrentTree++;
 		AddElement(currentNode->sRight, data);
 	}
 
