@@ -1,6 +1,4 @@
-#define BondoRithms Algorithms
-
-Currently Available BondoRithms : 
+Currently Available Algorithms : 
 
 *(Double)Linked List - 
    In computer science, a linked list is a linear collection of data elements,
